@@ -64,57 +64,72 @@ function RegisterPasswordPage() {
     <AuthShell heroImage={registerHeroPassword} heroAlt="راقبها ببيئة آمنة وذكية">
       <RegisterProgress activeStep={2} />
 
-      {isInstitution ? (
-        <div className="mb-5 space-y-2">
-          <label className="block text-right text-sm font-semibold text-[#374151]">اسم المؤسسة</label>
-          <input
-            value={store.workspace_name}
-            onChange={(e) => updateFields({ workspace_name: e.target.value })}
-            placeholder="مثل : معهد الحضارة"
-            className={inputClassName}
-          />
-          {fieldErrors.workspace_name ? (
-            <p className="text-sm text-red-600">{fieldErrors.workspace_name}</p>
-          ) : null}
-        </div>
-      ) : null}
-
-      <div className="space-y-5">
-        <PasswordField
-          label="اختر كلمة سر"
-          value={store.password}
-          onChange={(e) => updateFields({ password: e.target.value })}
-          error={fieldErrors.password}
-        />
-
-        <PasswordField
-          label="تأكيد كلمة السر"
-          value={store.confirm_password}
-          onChange={(e) => updateFields({ confirm_password: e.target.value })}
-          error={fieldErrors.confirm_password}
-        />
-      </div>
-
-      <label className="mt-5 flex cursor-pointer items-center justify-end gap-2">
-        <span className="text-sm text-[#6B7280]">خليك فاكرني</span>
-        <input
-          type="checkbox"
-          checked={rememberMe}
-          onChange={(e) => setRememberMe(e.target.checked)}
-          className="h-4 w-4 accent-[#2AA8A2]"
-        />
-      </label>
-
-      {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
-
-      <button
-        type="button"
-        onClick={handleSubmit}
-        disabled={loading}
-        className="mt-8 h-12 w-full rounded-xl bg-[#2AA8A2] text-base font-bold text-white shadow-[0_12px_20px_rgba(42,168,162,0.22)] transition hover:opacity-95 disabled:opacity-70 md:w-[448px]"
+      <form
+        className="mt-2"
+        autoComplete="off"
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleSubmit()
+        }}
       >
-        {loading ? 'جاري الإنشاء...' : 'إنشاء حساب'}
-      </button>
+        {isInstitution ? (
+          <div className="mb-5 space-y-2">
+            <label className="block text-right text-sm font-semibold text-[#374151]">اسم المؤسسة</label>
+            <input
+              type="text"
+              name="register-workspace-name"
+              value={store.workspace_name}
+              onChange={(e) => updateFields({ workspace_name: e.target.value })}
+              placeholder="مثل: معهد الحضارة"
+              autoComplete="off"
+              className={inputClassName}
+            />
+            {fieldErrors.workspace_name ? (
+              <p className="text-sm text-red-600">{fieldErrors.workspace_name}</p>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className="space-y-5">
+          <PasswordField
+            label="اختر كلمة سر"
+            name="register-password"
+            placeholder="أدخل كلمة المرور"
+            value={store.password}
+            onChange={(e) => updateFields({ password: e.target.value })}
+            error={fieldErrors.password}
+          />
+
+          <PasswordField
+            label="تأكيد كلمة السر"
+            name="register-confirm-password"
+            placeholder="أعد إدخال كلمة المرور"
+            value={store.confirm_password}
+            onChange={(e) => updateFields({ confirm_password: e.target.value })}
+            error={fieldErrors.confirm_password}
+          />
+        </div>
+
+        <label className="mt-5 flex cursor-pointer items-center justify-end gap-2">
+          <span className="text-sm text-[#6B7280]">خليك فاكرني</span>
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+            className="h-4 w-4 accent-[#2AA8A2]"
+          />
+        </label>
+
+        {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-8 h-12 w-full rounded-xl bg-[#2AA8A2] text-base font-bold text-white shadow-[0_12px_20px_rgba(42,168,162,0.22)] transition hover:opacity-95 disabled:opacity-70 md:w-[448px]"
+        >
+          {loading ? 'جاري الإنشاء...' : 'إنشاء حساب'}
+        </button>
+      </form>
     </AuthShell>
   )
 }

@@ -19,6 +19,10 @@ import SubjectsPage from './pages/subjects/SubjectsPage'
 import SubjectDetailsPage from './pages/subjects/SubjectDetailsPage'
 import QuestionBanksPage from './pages/question-banks/QuestionBanksPage'
 import QuestionBankEditorPage from './pages/question-banks/QuestionBankEditorPage'
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
+import ForgotPasswordOtpPage from './pages/auth/ForgotPasswordOtpPage'
+import ResetPasswordPage from './pages/auth/ResetPasswordPage'
+import ResetPasswordSuccessPage from './pages/auth/ResetPasswordSuccessPage'
 import { ROUTES } from './constants/routes'
 
 function App() {
@@ -26,6 +30,10 @@ function App() {
     <Routes>
       <Route path={ROUTES.HOME} element={<LandingPage />} />
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+      <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
+      <Route path={ROUTES.FORGOT_PASSWORD_OTP} element={<ForgotPasswordOtpPage />} />
+      <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />} />
+      <Route path={ROUTES.RESET_PASSWORD_SUCCESS} element={<ResetPasswordSuccessPage />} />
       <Route path={ROUTES.WELCOME} element={<WelcomePage />} />
       <Route path={ROUTES.JOIN} element={<JoinPage />} />
       <Route path={ROUTES.PATH_SELECTION} element={<PathSelectionPage />} />

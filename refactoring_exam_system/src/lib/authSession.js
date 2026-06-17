@@ -1,9 +1,13 @@
 import { refreshAccessToken } from '../services/auth.service'
 import { useAuthStore } from '../store/authStore'
-import { isAccessTokenExpired } from './token'
+import { getAccessTokenExpiresAt, isAccessTokenExpired } from './token'
+
+const REFRESH_BUFFER_MS = 60_000
 
 let isRefreshing = false
 let pendingQueue = []
+let refreshTimerId = null
+let sessionInitialized = false
 
 function flushQueue(error, token = null) {
   pendingQueue.forEach(({ resolve, reject }) => {
@@ -11,6 +15,88 @@ function flushQueue(error, token = null) {
     else resolve(token)
   })
   pendingQueue = []
+}
+
+export function clearScheduledRefresh() {
+  if (refreshTimerId) {
+    window.clearTimeout(refreshTimerId)
+    refreshTimerId = null
+  }
+}
+
+export function scheduleAccessTokenRefresh() {
+  clearScheduledRefresh()
+
+  const { access_token, refresh_token } = useAuthStore.getState()
+  if (!refresh_token) return
+
+  const expiresAt = getAccessTokenExpiresAt(access_token)
+  const shouldRefreshNow = !access_token || isAccessTokenExpired(access_token)
+
+  if (!expiresAt) {
+    if (shouldRefreshNow) {
+      enqueueTokenRefresh()
+        .then(() => scheduleAccessTokenRefresh())
+        .catch(() => {})
+    }
+    return
+  }
+
+  const delay = expiresAt - Date.now() - REFRESH_BUFFER_MS
+
+  if (delay <= 0) {
+    enqueueTokenRefresh()
+      .then(() => scheduleAccessTokenRefresh())
+      .catch(() => {})
+    return
+  }
+
+  refreshTimerId = window.setTimeout(() => {
+    enqueueTokenRefresh()
+      .then(() => scheduleAccessTokenRefresh())
+      .catch(() => {})
+  }, delay)
+}
+
+function handleVisibilityChange() {
+  if (document.visibilityState !== 'visible') return
+
+  const { access_token, refresh_token } = useAuthStore.getState()
+  if (!refresh_token) return
+
+  if (isAccessTokenExpired(access_token)) {
+    enqueueTokenRefresh()
+      .then(() => scheduleAccessTokenRefresh())
+      .catch(() => {})
+    return
+  }
+
+  scheduleAccessTokenRefresh()
+}
+
+export function initAuthSession() {
+  if (sessionInitialized) return
+  sessionInitialized = true
+
+  let previousAccessToken = useAuthStore.getState().access_token
+
+  useAuthStore.subscribe((state) => {
+    if (state.access_token === previousAccessToken) return
+
+    previousAccessToken = state.access_token
+
+    if (state.access_token) {
+      scheduleAccessTokenRefresh()
+      return
+    }
+
+    if (!state.refresh_token) {
+      clearScheduledRefresh()
+    }
+  })
+
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+  scheduleAccessTokenRefresh()
 }
 
 export function waitForAuthHydration() {
@@ -58,6 +144,7 @@ export function enqueueTokenRefresh() {
   const { refresh_token, setTokens, clearAuth } = useAuthStore.getState()
 
   if (!refresh_token) {
+    isRefreshing = false
     clearAuth()
     return Promise.reject(new Error('لا يوجد refresh token'))
   }
@@ -80,4 +167,13 @@ export function enqueueTokenRefresh() {
     .finally(() => {
       isRefreshing = false
     })
+}
+
+export async function ensureValidAccessToken() {
+  const { access_token, refresh_token } = useAuthStore.getState()
+
+  if (!refresh_token) return null
+  if (access_token && !isAccessTokenExpired(access_token)) return access_token
+
+  return enqueueTokenRefresh()
 }

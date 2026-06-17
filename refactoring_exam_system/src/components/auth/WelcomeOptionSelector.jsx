@@ -16,15 +16,18 @@ function WelcomeOptionSelector({ selected, onSelect }) {
   ]
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-7">
       {options.map(({ id, title, icon: Icon }) => {
         const isActive = selected === id
+        const isCreateSpace = id === WELCOME_SELECTION.CREATE_SPACE
         return (
           <button
             key={id}
             type="button"
             onClick={() => onSelect(id)}
-            className={`flex h-14 w-full items-center justify-start gap-3 rounded-2xl bg-[#EEF2F3] px-5 text-sm font-bold transition md:w-[448px] ${
+            className={`flex h-[54px] w-full items-center justify-start gap-3 rounded-2xl bg-[#EEF2F3] px-5 text-sm font-bold transition md:w-[448px] ${
+              isCreateSpace ? '-mt-3' : ''
+            } ${
               isActive
                 ? 'text-[#2AA8A2] ring-2 ring-[#2AA8A2]/35'
                 : 'text-[#374151] hover:bg-[#E8ECEE]'

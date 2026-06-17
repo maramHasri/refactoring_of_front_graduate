@@ -1,7 +1,15 @@
 import { useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 
-function PasswordField({ label, value, onChange, placeholder = '••••••••', error = '' }) {
+function PasswordField({
+  label,
+  value,
+  onChange,
+  placeholder = 'أدخل كلمة المرور',
+  error = '',
+  name,
+  autoComplete = 'new-password',
+}) {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
@@ -10,9 +18,11 @@ function PasswordField({ label, value, onChange, placeholder = '•••••�
       <div className="relative w-full md:w-[448px]">
         <input
           type={showPassword ? 'text' : 'password'}
+          name={name}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          autoComplete={autoComplete}
           className="h-12 w-full rounded-xl bg-[#EEF2F3] px-4 pl-12 text-sm text-[#374151] outline-none placeholder:text-[#9CA3AF] focus:ring-2 focus:ring-[#2AA8A2]/40"
         />
         <button

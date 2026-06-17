@@ -5,7 +5,7 @@ import WelcomeOptionSelector from '../components/auth/WelcomeOptionSelector'
 import { REGISTRATION_FLOW, WELCOME_SELECTION } from '../constants/auth'
 import { ROUTES } from '../constants/routes'
 import { useRegistrationStore } from '../store/registrationStore'
-import welcomeHero from '../assets/auth/welcome-hero.png'
+import valuePropSide from '../assets/auth/value-prop-side.png'
 
 function WelcomePage() {
   const navigate = useNavigate()
@@ -37,32 +37,41 @@ function WelcomePage() {
 
   return (
     <AuthShell
-      heroImage={welcomeHero}
+      heroImage={valuePropSide}
       heroAlt="مساحتك التعليمية الخاصة"
-      heroImagePosition="right center"
+      heroImagePosition="center"
+      contentAlign="top"
     >
-      <h1 className="text-right text-3xl font-extrabold text-[#2A3433] md:text-4xl">أهلا بك في كويزهاب</h1>
-      <p className="mt-3 text-right text-sm leading-7 text-[#6B7280] md:text-base">هل تريد ...</p>
+      <div className="flex flex-1 flex-col lg:min-h-full">
+        <div>
+          <h1 className="text-right text-[32px] font-extrabold leading-[1.2] text-[#2A3433] md:text-[34px]">
+            أهلا بك في كويزهاب
+          </h1>
+          <p className="mt-2 text-right text-sm leading-7 text-[#6B7280] md:text-[15px]">هل تريد ...</p>
+        </div>
 
-      <div className="mt-8">
-        <WelcomeOptionSelector selected={welcome_selection} onSelect={setWelcomeSelection} />
-        {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
+        <div className="flex flex-1 flex-col justify-center py-6">
+          <WelcomeOptionSelector selected={welcome_selection} onSelect={setWelcomeSelection} />
+          {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
+
+          <p className="mt-7 text-right text-sm text-[#6B7280]">
+            لديك حساب بالفعل؟{' '}
+            <Link to={ROUTES.LOGIN} className="font-bold text-[#2AA8A2]">
+              تسجيل دخول
+            </Link>
+          </p>
+        </div>
+
+        <div className="mb-5 w-full md:w-[448px]">
+          <button
+            type="button"
+            onClick={handleNext}
+            className="h-12 w-full rounded-xl bg-[#2AA8A2] text-base font-bold text-white shadow-[0_12px_20px_rgba(42,168,162,0.22)] transition hover:opacity-95"
+          >
+            التالي
+          </button>
+        </div>
       </div>
-
-      <p className="mt-6 text-right text-sm text-[#6B7280]">
-        لديك حساب بالفعل؟{' '}
-        <Link to={ROUTES.LOGIN} className="font-bold text-[#2AA8A2]">
-          تسجيل دخول
-        </Link>
-      </p>
-
-      <button
-        type="button"
-        onClick={handleNext}
-        className="mt-8 h-12 w-full rounded-xl bg-[#2AA8A2] text-base font-bold text-white shadow-[0_12px_20px_rgba(42,168,162,0.22)] transition hover:opacity-95 md:w-[448px]"
-      >
-        التالي
-      </button>
     </AuthShell>
   )
 }

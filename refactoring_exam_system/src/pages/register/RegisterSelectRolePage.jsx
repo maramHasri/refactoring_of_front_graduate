@@ -59,52 +59,67 @@ function RegisterSelectRolePage() {
         <p className="mt-2 text-sm text-red-600">{errors.workspace_kind}</p>
       ) : null}
 
-      <div className="mt-6 space-y-5">
-        <div className="space-y-2">
-          <label className="block text-right text-sm font-semibold text-[#374151]">الاسم الكامل</label>
-          <input
-            value={store.full_name}
-            onChange={(e) => updateFields({ full_name: e.target.value })}
-            placeholder="نوح الألفي"
-            className={inputClassName}
-          />
-          {errors.full_name ? <p className="text-sm text-red-600">{errors.full_name}</p> : null}
-        </div>
-
-        <div className="space-y-2">
-          <label className="block text-right text-sm font-semibold text-[#374151]">البريد الإلكتروني</label>
-          <input
-            type="email"
-            value={store.email}
-            onChange={(e) => updateFields({ email: e.target.value })}
-            placeholder="dr.smith@university.edu"
-            className={inputClassName}
-          />
-          {errors.email ? <p className="text-sm text-red-600">{errors.email}</p> : null}
-        </div>
-
-        <div className="space-y-2">
-          <label className="block text-right text-sm font-semibold text-[#374151]">رقم التواصل</label>
-          <input
-            type="tel"
-            value={store.phone_number}
-            onChange={(e) => updateFields({ phone_number: e.target.value })}
-            placeholder="0987654321"
-            className={inputClassName}
-          />
-          {errors.phone_number ? (
-            <p className="text-sm text-red-600">{errors.phone_number}</p>
-          ) : null}
-        </div>
-      </div>
-
-      <button
-        type="button"
-        onClick={handleNext}
-        className="mt-8 h-12 w-full rounded-xl bg-[#2AA8A2] text-base font-bold text-white shadow-[0_12px_20px_rgba(42,168,162,0.22)] transition hover:opacity-95 md:w-[448px]"
+      <form
+        className="mt-6"
+        autoComplete="off"
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleNext()
+        }}
       >
-        التالي
-      </button>
+        <div className="space-y-5">
+          <div className="space-y-2">
+            <label className="block text-right text-sm font-semibold text-[#374151]">الاسم الكامل</label>
+            <input
+              type="text"
+              name="register-full-name"
+              value={store.full_name}
+              onChange={(e) => updateFields({ full_name: e.target.value })}
+              placeholder="أدخل اسمك الكامل"
+              autoComplete="off"
+              className={inputClassName}
+            />
+            {errors.full_name ? <p className="text-sm text-red-600">{errors.full_name}</p> : null}
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-right text-sm font-semibold text-[#374151]">البريد الإلكتروني</label>
+            <input
+              type="email"
+              name="register-email"
+              value={store.email}
+              onChange={(e) => updateFields({ email: e.target.value })}
+              placeholder="أدخل بريدك الإلكتروني"
+              autoComplete="off"
+              className={inputClassName}
+            />
+            {errors.email ? <p className="text-sm text-red-600">{errors.email}</p> : null}
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-right text-sm font-semibold text-[#374151]">رقم التواصل</label>
+            <input
+              type="tel"
+              name="register-phone"
+              value={store.phone_number}
+              onChange={(e) => updateFields({ phone_number: e.target.value })}
+              placeholder="أدخل رقم التواصل"
+              autoComplete="off"
+              className={inputClassName}
+            />
+            {errors.phone_number ? (
+              <p className="text-sm text-red-600">{errors.phone_number}</p>
+            ) : null}
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          className="mt-8 h-12 w-full rounded-xl bg-[#2AA8A2] text-base font-bold text-white shadow-[0_12px_20px_rgba(42,168,162,0.22)] transition hover:opacity-95 md:w-[448px]"
+        >
+          التالي
+        </button>
+      </form>
     </AuthShell>
   )
 }

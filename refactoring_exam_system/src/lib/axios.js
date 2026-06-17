@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { enqueueTokenRefresh } from './authSession'
+import { logApiError, parseApiError } from './apiError'
+import { ensureValidAccessToken, enqueueTokenRefresh } from './authSession'
 import { getWorkspaceId } from './workspaceContext'
 import { useAuthStore } from '../store/authStore'
 
@@ -17,19 +18,31 @@ function isAuthRoute(url = '') {
     url.includes('/auth/refresh') ||
     url.includes('/auth/register') ||
     url.includes('/auth/verify-otp') ||
-    url.includes('/auth/resend-otp')
+    url.includes('/auth/resend-otp') ||
+    url.includes('/auth/forgot-password') ||
+    url.includes('/auth/reset-password')
   )
 }
 
-api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().access_token
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+api.interceptors.request.use(async (config) => {
+  const url = config.url || ''
+
+  if (!isAuthRoute(url)) {
+    try {
+      const token = await ensureValidAccessToken()
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+    } catch {
+      // Refresh failed; request proceeds and the 401 handler redirects to login.
+    }
   }
+
   const workspaceId = getWorkspaceId()
   if (workspaceId) {
     config.headers['X-Workspace-Id'] = String(workspaceId)
   }
+
   return config
 })
 
@@ -62,12 +75,8 @@ api.interceptors.response.use(
       }
     }
 
-    const message =
-      error.response?.data?.message ||
-      error.response?.data?.error ||
-      error.message ||
-      'حدث خطأ غير متوقع'
-    return Promise.reject(new Error(message))
+    logApiError(error, originalRequest)
+    return Promise.reject(new Error(parseApiError(error)))
   },
 )
 

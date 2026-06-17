@@ -52,52 +52,69 @@ function StudentRegisterPage() {
         املأ بيانات حسابك لتنضم الى مساحة تعليمية
       </p>
 
-      <div className="mt-8 space-y-5">
-        <div className="space-y-2">
-          <label className="block text-right text-sm font-semibold text-[#374151]">الاسم الكامل</label>
-          <input
-            value={store.full_name}
-            onChange={(e) => updateFields({ full_name: e.target.value })}
-            placeholder="نوح الألفي"
-            className={inputClassName}
-          />
-          {errors.full_name ? <p className="text-sm text-red-600">{errors.full_name}</p> : null}
-        </div>
-
-        <div className="space-y-2">
-          <label className="block text-right text-sm font-semibold text-[#374151]">البريد الإلكتروني</label>
-          <input
-            type="email"
-            value={store.email}
-            onChange={(e) => updateFields({ email: e.target.value })}
-            placeholder="dr.smith@university.edu"
-            className={inputClassName}
-          />
-          {errors.email ? <p className="text-sm text-red-600">{errors.email}</p> : null}
-        </div>
-
-        <PasswordField
-          label="اختر كلمة سر"
-          value={store.password}
-          onChange={(e) => updateFields({ password: e.target.value })}
-          error={errors.password}
-        />
-
-        <PasswordField
-          label="تأكيد كلمة السر"
-          value={store.confirm_password}
-          onChange={(e) => updateFields({ confirm_password: e.target.value })}
-          error={errors.confirm_password}
-        />
-      </div>
-
-      <button
-        type="button"
-        onClick={handleNext}
-        className="mt-8 h-12 w-full rounded-xl bg-[#2AA8A2] text-base font-bold text-white shadow-[0_12px_20px_rgba(42,168,162,0.22)] transition hover:opacity-95 md:w-[448px]"
+      <form
+        className="mt-8"
+        autoComplete="off"
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleNext()
+        }}
       >
-        التالي
-      </button>
+        <div className="space-y-5">
+          <div className="space-y-2">
+            <label className="block text-right text-sm font-semibold text-[#374151]">الاسم الكامل</label>
+            <input
+              type="text"
+              name="student-register-full-name"
+              value={store.full_name}
+              onChange={(e) => updateFields({ full_name: e.target.value })}
+              placeholder="أدخل اسمك الكامل"
+              autoComplete="off"
+              className={inputClassName}
+            />
+            {errors.full_name ? <p className="text-sm text-red-600">{errors.full_name}</p> : null}
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-right text-sm font-semibold text-[#374151]">البريد الإلكتروني</label>
+            <input
+              type="email"
+              name="student-register-email"
+              value={store.email}
+              onChange={(e) => updateFields({ email: e.target.value })}
+              placeholder="أدخل بريدك الإلكتروني"
+              autoComplete="off"
+              className={inputClassName}
+            />
+            {errors.email ? <p className="text-sm text-red-600">{errors.email}</p> : null}
+          </div>
+
+          <PasswordField
+            label="اختر كلمة سر"
+            name="student-register-password"
+            placeholder="أدخل كلمة المرور"
+            value={store.password}
+            onChange={(e) => updateFields({ password: e.target.value })}
+            error={errors.password}
+          />
+
+          <PasswordField
+            label="تأكيد كلمة السر"
+            name="student-register-confirm-password"
+            placeholder="أعد إدخال كلمة المرور"
+            value={store.confirm_password}
+            onChange={(e) => updateFields({ confirm_password: e.target.value })}
+            error={errors.confirm_password}
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="mt-8 h-12 w-full rounded-xl bg-[#2AA8A2] text-base font-bold text-white shadow-[0_12px_20px_rgba(42,168,162,0.22)] transition hover:opacity-95 md:w-[448px]"
+        >
+          التالي
+        </button>
+      </form>
 
       <p className="mt-5 text-center text-sm text-[#6B7280]">
         لديك حساب بالفعل؟{' '}

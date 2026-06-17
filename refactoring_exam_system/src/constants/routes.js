@@ -15,6 +15,11 @@ export const ROUTES = {
   REGISTER_OTP: '/register/otp',
   REGISTER_SUCCESS: '/register/success',
 
+  FORGOT_PASSWORD: '/forgot-password',
+  FORGOT_PASSWORD_OTP: '/forgot-password/otp',
+  RESET_PASSWORD: '/reset-password',
+  RESET_PASSWORD_SUCCESS: '/reset-password/success',
+
   STUDENT_REGISTER: '/student/register',
   STUDENT_JOIN_CODE: '/student/join-code',
 }

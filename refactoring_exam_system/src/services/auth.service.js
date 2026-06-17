@@ -37,6 +37,16 @@ export async function login(payload) {
   return data
 }
 
+export async function forgotPassword(payload) {
+  const { data } = await api.post('/auth/forgot-password', payload)
+  return data
+}
+
+export async function resetPassword(payload) {
+  const { data } = await api.post('/auth/reset-password', payload)
+  return data
+}
+
 export async function checkInstitutionApprovalStatus({ email, password }) {
   try {
     await api.post('/auth/login', { email, password })

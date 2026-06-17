@@ -2,14 +2,24 @@ import { Link } from 'react-router-dom'
 import { ROUTES } from '../../constants/routes'
 import AuthHeroPanel from './AuthHeroPanel'
 
-function AuthShell({ children, heroImage, heroAlt = '', heroImagePosition = 'center' }) {
+function AuthShell({
+  children,
+  heroImage,
+  heroAlt = '',
+  heroImagePosition = 'center',
+  contentAlign = 'center',
+}) {
+  const contentClassName =
+    contentAlign === 'top'
+      ? 'justify-start pt-8 md:pt-10 lg:pt-14'
+      : 'justify-center'
+
   return (
     <main dir="rtl" className="min-h-screen bg-[#F6F8F9] px-4 py-6 font-sans text-[#1F2533] md:px-8">
       <header dir="ltr" className="mx-auto flex w-full max-w-[1240px] items-center justify-between">
         <p className="text-sm text-[#6B7280]">ملاذك الأكاديمي</p>
-        <Link to={ROUTES.HOME} className="text-2xl font-extrabold">
-          <span className="text-[#374151]">Quiz</span>
-          <span className="text-[#2AA8A2]">Hub</span>
+        <Link to={ROUTES.HOME} className="text-[28px] font-extrabold leading-none text-[#2AA8A2]">
+          QuizHub
         </Link>
       </header>
 
@@ -18,10 +28,9 @@ function AuthShell({ children, heroImage, heroAlt = '', heroImagePosition = 'cen
           dir="ltr"
           className="mx-auto flex w-full max-w-[1152px] flex-col overflow-hidden rounded-[24px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] lg:h-[700px] lg:flex-row"
         >
-          {/* شق الحقول — يسار */}
           <div
             dir="rtl"
-            className="flex w-full flex-col justify-center p-8 md:p-10 lg:h-[700px] lg:w-[576px] lg:overflow-y-auto"
+            className={`flex w-full flex-col p-8 md:px-10 md:py-10 lg:h-[700px] lg:w-[576px] lg:overflow-y-auto lg:py-12 ${contentClassName}`}
           >
             {children}
           </div>
