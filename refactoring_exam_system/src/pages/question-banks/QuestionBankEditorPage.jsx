@@ -9,7 +9,13 @@ import QuestionsList from '../../components/question-banks/editor/QuestionsList'
 import TopicsPlaceholder from '../../components/question-banks/editor/TopicsPlaceholder'
 import { ROUTES } from '../../constants/routes'
 import { canAccessQuestionBanks } from '../../lib/workspaceContext'
-import { createQuestionBankQuestions, getMyQuestionBanks, getQuestionBankQuestions, updateQuestionBank } from '../../services/questionBanks.service'
+import { isRichTextEmpty } from '../../lib/richText'
+import {
+  createQuestionBankQuestions,
+  getMyQuestionBanks,
+  getQuestionBankQuestions,
+  updateQuestionBank,
+} from '../../services/questionBanks.service'
 import { useToastStore } from '../../store/toastStore'
 
 function createDefaultQuestion() {
@@ -96,7 +102,7 @@ function QuestionBankEditorPage() {
   }
 
   const validateDraftQuestion = () => {
-    if (!draftQuestion.body.trim()) {
+    if (isRichTextEmpty(draftQuestion.body)) {
       showToast('نص السؤال مطلوب', 'error')
       return false
     }

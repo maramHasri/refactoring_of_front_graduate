@@ -30,7 +30,10 @@ function QuestionsList({ questions }) {
                 <span>{question.points} علامة</span>
               </div>
             </div>
-            <p className="text-sm text-[#374151]">{question.body}</p>
+            <div
+              className="text-sm text-[#374151]"
+              dangerouslySetInnerHTML={{ __html: question.body }}
+            />
           </article>
         ))}
       </div>

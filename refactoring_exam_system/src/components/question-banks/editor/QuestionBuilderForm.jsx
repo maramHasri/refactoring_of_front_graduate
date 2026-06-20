@@ -1,5 +1,6 @@
 import { Plus, Trash2 } from 'lucide-react'
-import { DIFFICULTY_OPTIONS, QUESTION_TYPE_OPTIONS, getQuestionTypeLabel } from '../../../lib/questionBanks'
+import { DIFFICULTY_OPTIONS, getQuestionTypeLabel } from '../../../lib/questionBanks'
+import QuestionBodyEditor from './QuestionBodyEditor'
 
 const inputClassName =
   'w-full rounded-xl bg-[#F6F8F9] px-4 py-3 text-sm text-[#374151] outline-none placeholder:text-[#94A3B8] focus:ring-2 focus:ring-[#2AA8A2]/40'
@@ -92,45 +93,28 @@ function QuestionBuilderForm({ value, onChange, onSave, onAddAnother }) {
         <span className="text-xs font-semibold text-[#94A3B8]">{getQuestionTypeLabel(value.type_code)}</span>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-[#374151]">نوع السؤال</label>
-          <select
-            value={value.type_code}
-            onChange={(event) => handleTypeChange(event.target.value)}
-            className={inputClassName}
-          >
-            {QUESTION_TYPE_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-[#374151]">الصعوبة</label>
-          <select
-            value={value.difficulty}
-            onChange={(event) => setField('difficulty', event.target.value)}
-            className={inputClassName}
-          >
-            {DIFFICULTY_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="mt-4 space-y-2">
+        <label className="text-sm font-semibold text-[#374151]">الصعوبة</label>
+        <select
+          value={value.difficulty}
+          onChange={(event) => setField('difficulty', event.target.value)}
+          className={inputClassName}
+        >
+          {DIFFICULTY_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="mt-4 space-y-2">
         <label className="text-sm font-semibold text-[#374151]">نص السؤال</label>
-        <textarea
+        <QuestionBodyEditor
           value={value.body}
-          onChange={(event) => setField('body', event.target.value)}
-          rows={4}
-          placeholder="اكتب سؤالك هنا..."
-          className={inputClassName}
+          typeCode={value.type_code}
+          onChange={(body) => setField('body', body)}
+          onTypeChange={handleTypeChange}
         />
       </div>
 

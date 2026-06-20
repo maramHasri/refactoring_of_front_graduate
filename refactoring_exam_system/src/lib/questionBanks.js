@@ -13,7 +13,7 @@ export const VISIBILITY_OPTIONS = [
 export const QUESTION_TYPE_OPTIONS = [
   { value: 'MCQ', label: 'اختيار واحد' },
   { value: 'TRUE_FALSE', label: 'صح / خطأ' },
-  { value: 'MULTI_SELECT', label: 'اختيارات متعددة' },
+  { value: 'MULTI_SELECT', label: 'متعدد الخيارات' },
   { value: 'ESSAY', label: 'مقالي' },
 ]
 

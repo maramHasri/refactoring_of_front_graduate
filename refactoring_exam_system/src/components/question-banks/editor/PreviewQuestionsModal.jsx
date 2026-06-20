@@ -59,7 +59,10 @@ function PreviewQuestionsModal({ open, questions, onClose }) {
                 <span>سؤال {index + 1}</span>
                 <span>{getQuestionTypeLabel(question.type_code)}</span>
               </div>
-              <p className="text-sm font-semibold text-[#374151]">{question.body}</p>
+              <div
+                className="text-sm font-semibold text-[#374151]"
+                dangerouslySetInnerHTML={{ __html: question.body }}
+              />
               <PreviewChoices question={question} />
             </article>
           ))}
